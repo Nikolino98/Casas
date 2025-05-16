@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import {
@@ -23,11 +22,12 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
           {images.map((image, index) => (
             <CarouselItem key={index}>
               <div className="relative w-full">
-                <AspectRatio ratio={16 / 6} className="bg-gray-100">
+                <AspectRatio ratio={16 / 9} className="bg-gray-100 md:h-[500px] h-[300px]">
                   <img
                     src={image}
                     alt={`Imagen ${index + 1}`}
-                    className="w-full h-full object-contain"
+                    className="w-full h-full object-cover"
+                    loading="lazy"
                   />
                 </AspectRatio>
               </div>
