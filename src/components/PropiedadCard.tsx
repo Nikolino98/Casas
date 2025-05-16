@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
@@ -47,15 +46,26 @@ const PropiedadCard: React.FC<PropiedadCardProps> = ({ propiedad }) => {
     imagen_principal 
   } = propiedad;
 
+  // Función para generar URL de imagen optimizada
+  const getOptimizedImageUrl = (url: string) => {
+    // Si la URL es de un placeholder, retornarla sin cambios
+    if (url.includes('placeholder.com')) {
+      return url;
+    }
+    // Agregar parámetros de optimización para imágenes reales
+    return `${url}?quality=80&width=400`;
+  };
+
   return (
     <Card className="overflow-hidden transition-transform duration-300 hover:shadow-lg hover:-translate-y-1
     bg-white rounded-lg shadow-xl border border-blue-200 backdrop-blur-sm bg-gradient-to-br from-blue-50 to-white shadow-black-200/50">
       <Link to={`/propiedad/${id}`} className="block">
         <div className="relative h-48 w-full overflow-hidden">
           <img
-            src={imagen_principal || "https://via.placeholder.com/400x300?text=Sin+Imagen"}
+            src={getOptimizedImageUrl(imagen_principal || "https://via.placeholder.com/400x300?text=Sin+Imagen")}
             alt={titulo}
             className="h-full w-full object-cover transition-transform duration-300 hover:scale-110"
+            loading="lazy"
           />
           <div className="absolute top-0 left-0 p-2">
             <Badge className="capitalize bg-blue-600 hover:bg-blue-700">
@@ -63,7 +73,7 @@ const PropiedadCard: React.FC<PropiedadCardProps> = ({ propiedad }) => {
             </Badge>
           </div>
         </div>
-        <CardContent className="p-4 ">
+        <CardContent className="p-4">
           <h3 className="text-lg font-bold mb-2 line-clamp-1">{titulo}</h3>
           <p className="text-gray-500 text-sm mb-3 line-clamp-1">{direccion}</p>
           <p className="text-blue-600 font-bold text-xl mb-3">{formatPrecio(precio)}</p>

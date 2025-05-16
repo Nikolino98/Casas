@@ -10,10 +10,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Effect for scroll to top on route change
   useEffect(() => {
     window.scrollTo(0, 0);
+    setIsMobileMenuOpen(false); // Cerrar menú móvil al cambiar de ruta
   }, [location.pathname]);
 
   // Effect for navbar transparency
@@ -26,6 +28,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -57,10 +63,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <div className="md:hidden">
               <button
                 className="text-gray-600 hover:text-gray-900 focus:outline-none"
-                onClick={() => {
-                  const mobileMenu = document.getElementById("mobile-menu");
-                  mobileMenu?.classList.toggle("hidden");
-                }}
+                onClick={toggleMobileMenu}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -80,18 +83,22 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </div>
           </div>
           {/* Mobile Menu */}
-          <div id="mobile-menu" className="md:hidden hidden pb-4">
-            <div className="flex flex-col space-y-3">
-              <MobileNavLink to="/" currentPath={location.pathname}>
+          <div 
+            className={`md:hidden transition-all duration-300 ease-in-out ${
+              isMobileMenuOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
+            }`}
+          >
+            <div className="flex flex-col space-y-3 pb-4">
+              <MobileNavLink to="/" currentPath={location.pathname} onClick={toggleMobileMenu}>
                 Inicio
               </MobileNavLink>
-              <MobileNavLink to="/propiedades" currentPath={location.pathname}>
+              <MobileNavLink to="/propiedades" currentPath={location.pathname} onClick={toggleMobileMenu}>
                 Propiedades
               </MobileNavLink>
-              <MobileNavLink to="/contacto" currentPath={location.pathname}>
+              <MobileNavLink to="/contacto" currentPath={location.pathname} onClick={toggleMobileMenu}>
                 Contacto
               </MobileNavLink>
-              <MobileNavLink to="/admin" currentPath={location.pathname}>
+              <MobileNavLink to="/admin" currentPath={location.pathname} onClick={toggleMobileMenu}>
                 Admin
               </MobileNavLink>
             </div>
@@ -176,12 +183,14 @@ const MobileNavLink: React.FC<{
   to: string;
   currentPath: string;
   children: React.ReactNode;
-}> = ({ to, currentPath, children }) => {
+  onClick: () => void;
+}> = ({ to, currentPath, children, onClick }) => {
   const isActive = currentPath === to || (to !== "/" && currentPath.startsWith(to));
 
   return (
     <Link
       to={to}
+      onClick={onClick}
       className={`text-center py-2 ${
         isActive
           ? "bg-blue-100 text-blue-600 font-medium rounded-md"

@@ -153,7 +153,8 @@ const PropiedadDetalle = () => {
 
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
           {/* Galería de imágenes */}
-          <div className="w-full h-[400px] md:h-[500px] relative">
+          {/* <div className="w-full h-[200px] md:h-[500px] relative"> */}
+          <div className="w-full h-[200px] sm:h-[200px] md:h-[800px] relative">
             <ImageGallery images={prepararImagenes()} />
           </div>
 
