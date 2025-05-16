@@ -16,7 +16,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
   const [currentImage, setCurrentImage] = useState(0);
 
   return (
-    <div className="w-full h-auto md:h-[500px] flex justify-center items-center ">
+    <div className="w-full h-auto md:h-[800px] flex justify-center items-center ">
       <Carousel className="w-full">
         <CarouselContent>
           {images.map((image, index) => (
